@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.css" />
+<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css"/>
+
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+
+	<link rel="stylesheet" href="css/blue-gray.theme.css">
+	<link href="css/reset.css" rel="stylesheet"/>
+	<link href="css/layout.css" rel="stylesheet"/>
+	<link href="css/components.css" rel="stylesheet"/>
+	<link href="css/plugins.css" rel="stylesheet"/>
+	<link href="css/themes/bud-green.theme.css" rel="stylesheet" id="theme"/>
+	<link href="css/custom.css" rel="stylesheet"/>
+	<link href="css/animate.min.css" rel="stylesheet"/>
+
+
+
+	<script src="cordova.js"></script>
+
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+</head>
+	<body>
+		<div data-role="page" id="cultivos" class="page-content animated fadeInLeft">			
+			<div class="header-content" style="background:white;">
+				<div class="row">
+						<span class="pull-left col-sm-6 col-lg-6 col-md-6 col-xs-6">
+							<img src="universidad.jpg" width="115px"/>
+						</span>
+						<ul class="pull-right col-sm-6 col-lg-6 col-md-6 col-xs-6" style="text-align: right;">
+						<button id="cerrarSesion" style="background-color: #AC2D26; color: #fff; width:115px" href="#" class="btn btn-info">Cerrar Sesi&#243;n</button>
+						</ul>
+				</div>
+			</div>
+				
+			<div data-role="main" class="body-content">
+				<div class="panel panel-theme rounded shadow">
+					<div class="panel-heading" id="encuestas">
+					
+					</div>
+					<div class="panel-body">
+						<div id="blog-grid" class="row">
+							
+						</div>
+					</div>
+					</div>
+			</div>
+			<div class="form-footer">
+					<div class="col-sm-12" style="text-align:center">
+						Universidad Nacional de Cuyo<br/><a href="#feedback" id="feedback">Core FeedBack</a>
+					</div>
+					<div class="pull-left col-sm-6" style="text-align:left">
+						<button id="volver" style="width:70px" href="index.html" class="btn btn-default rounded shadow mr-5">Volver</button>
+					</div>
+					
+					<div class="pull-right col-sm-6" style="text-align: right;">
+						<button id="salir" style="width:70px" href="index.html" class="btn btn-default rounded shadow mr-5">Salir</button>
+					</div>
+					<div class="clearfix"></div>
+			</div>
+		</div>
+
+		<script>
+		$(document).ready(function(){
+				$("#cerrarSesion").on("click",function(event) {
+					localStorage.removeItem("usuario"); // Para cerrar sesion
+					window.location.replace('login.html');
+				});
+		});
+		$(document).on('pageinit', '#cultivos', function(){
+			
+			
+			var datos = location.search; 
+			datos = datos.substr(1,datos.length);
+			var arrVariables = datos.split ("&"); 
+			
+			var arrVar0 = arrVariables[0].split ("=");  
+			
+
+			var encuestas = arrVar0[1];
+			encuestas = encuestas.toUpperCase() 
+			$('#encuestas').append('<h2>' + encuestas + '</h2>');
+			
+			var usuario = localStorage.getItem("usuario");
+			var url = 'http://mba.coreback.net/CE/encuesta/ver/mobile?mail=' + usuario;
+			
+			$("#volver").on("click",function(event) {
+				window.location.replace('encuestas.html?subscripcion=MBA');
+			});
+			
+			$("#salir").on("click",function(event) {
+				navigator.app.exitApp();
+			});
+
+			$('#feedback').on("click",function(event) {
+				event.preventDefault();
+				window.open("http://feedback.grupocore.net/", '_system');
+			});
+			
+			$.ajax({
+				url: url,
+		        dataType: "json",
+		        async: true,
+		        success: function (result) {
+		        	$.each(result.encuestas, function(i, row) {
+
+						var blog = '<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12"><div class="blog-item rounded shadow"><a id="cultivo' + row.id +'" href="#pagetwo?cultivo=' + row.id  + '" class="blog-img">';
+
+						blog = blog + '<img src="encuesta.jpg" width="90%;" class="img-responsive full-width" alt="..." /></a>';
+
+                        blog = blog + '<div class="blog-details"><div class="ribbon-wrapper"><div class="ribbon ribbon-primary">'+ row.id + '</div></div><h4 class="blog-title" style="text-align:center;">' + row.titulo + '</h4></div></div></div>';
+
+			            $('#blog-grid').append(blog);
+			            $("#cultivo"+ row.id + "").on("click",function(event) {
+							window.location.replace('enfermedades.html?'+datos+'&cultivo='+row.id+'&cultivoNombre='+row.nombre);
+						});
+			        });
+		        },
+		        error: function (request,error) {
+		        	alert('Ha ocurrido un error de red, intente nuevamente por favor!');
+		        }
+		    });
+		});
+		</script>
+	</body>
+</html>

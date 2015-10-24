@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.css" />
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css"/>
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+
+	<link rel="stylesheet" href="css/blue-gray.theme.css">
+	<link href="css/reset.css" rel="stylesheet"/>
+	<link href="css/layout.css" rel="stylesheet"/>
+	<link href="css/components.css" rel="stylesheet"/>
+	<link href="css/plugins.css" rel="stylesheet"/>
+	<link href="css/themes/bud-green.theme.css" rel="stylesheet" id="theme"/>
+	<link href="css/custom.css" rel="stylesheet"/>
+	<link href="css/animate.min.css" rel="stylesheet"/>
+
+
+
+	<script src="cordova.js"></script>
+
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+</head>
+	<body>
+		<div data-role="page" id="cultivos" class="page-content animated fadeInLeft">			
+			<div class="header-content" style="background:white;">
+				<div class="row">
+						<span class="pull-left col-sm-6 col-lg-6 col-md-6 col-xs-6">
+							<img src="universidad.jpg" width="115px"/>
+						</span>
+						<ul class="pull-right col-sm-6 col-lg-6 col-md-6 col-xs-6" style="text-align: right;">
+						<button id="cerrarSesion" style="background-color: #AC2D26; color: #fff; width:115px" href="#" class="btn btn-info">Cerrar Sesi&#243;n</button>
+						</ul>
+				</div>
+			</div>
+				
+			<div data-role="main" class="body-content">
+				<div class="panel panel-theme rounded shadow">
+					<div class="panel-heading" id="segmento">
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<form id="form" class="form-horizontal">
+							
+							</form>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="form-footer">
+					<div class="col-sm-12" style="text-align:center">
+						Universidad Nacional de Cuyo<br/><a href="#feedback" id="feedback">Core FeedBack</a>
+					</div>
+					<div class="pull-left col-sm-6" style="text-align:left">
+						<button id="volver" style="width:70px" href="index.html" class="btn btn-default rounded shadow mr-5">Volver</button>
+					</div>
+					<div class="pull-right col-sm-6" style="text-align: right;">
+						<button id="salir" style="width:70px" href="index.html" class="btn btn-default rounded shadow mr-5">Salir</button>
+					</div>
+					<div class="clearfix"></div>
+			</div>
+		</div>
+	 
+<script>
+		$(document).on('pageinit', '#cultivos', function(){
+			
+	var datos = location.search;
+
+			datos = datos.substr(1,datos.length);
+			var arrVariables = datos.split ("&"); 
+			// arrVariables = ["segmentos=???", "???=???"] 
+			var arrVar0 = arrVariables[0].split ("="); 
+			var arrVar1 = arrVariables[1].split ("=");
+			var arrVar2 = arrVariables[2].split ("="); 
+// 			arrVar0 = ["segmento","???"] 
+// 			arrVar1 = ["cultivoID","???"]
+// 			arrVar2 = ["cultivoNombre","???"] 
+			var buscar="%20"
+			var segmento = arrVar0[1];
+			var idEncuesta = arrVar1[1];
+			segmento = segmento.toUpperCase();
+			var cultivoNombre = arrVar2[1];
+			cultivoNombre = cultivoNombre.toUpperCase();
+			cultivoNombre = cultivoNombre.replace(new RegExp(buscar,"g") ," ");
+
+			
+			var url = 'http://mba.coreback.net/CE/encuesta/encuesta/mobile?id=' + idEncuesta;
+			
+			$("#volver").on("click",function(event) {
+				window.location.replace('encuestas.html?subscripcion=MBA');
+			});
+
+			$("#salir").on("click",function(event) {
+				navigator.app.exitApp();
+			});
+
+			
+
+			$.ajax({
+		        url: url,
+		        dataType: "json",
+		        async: true,
+		        success: function (result) {
+					var html = '<div class="form-group">';
+					html += '<input type="hidden" name="id" value="' + result.id + '"/>';
+					$('#segmento').append('<h4>' + result.encuesta + '</h4>');			
+					
+					html += '<span style="margin-left: 12px;">' + result.modelo + '<span><br/>';
+
+					$.each(result.preguntas, function(i, row) {
+						html += '<label class="col-sm-12" style="font-weight: bold; margin-bottom: 12px; margin-top: 12px;">' + row.pregunta + '</label>';
+						if(row.tipo == 'VALORACION5'){
+							html += '<div class="col-sm-8">';
+							html += '<div class="col-sm-1 rdio rdio-theme circle">';
+							html += '<input id="radio-type-circle-' + row.id + '-1" type="radio" name="pregunta-' + row.id + '" value="1"/>';
+							html += '<label for="radio-type-circle-' + row.id + '-1"class="col-md-1" style="padding-left: 26px">1</label>';
+							html += '</div>';
+							html += '<div class="col-sm-1 rdio rdio-theme circle">';
+							html += '<input id="radio-type-circle-' + row.id + '-2" type="radio" name="pregunta-' + row.id + '" value="2"/>';
+							html += '<label for="radio-type-circle-' + row.id + '-2"class="col-md-1" style="padding-left: 26px">2</label>';
+							html += '</div>';
+							html += '<div class="col-sm-1 rdio rdio-theme circle">';
+							html += '<input id="radio-type-circle-' + row.id + '-3" type="radio" name="pregunta-' + row.id + '" value="3"/>';
+							html += '<label for="radio-type-circle-' + row.id + '-3"class="col-md-1" style="padding-left: 26px">3</label>';
+							html += '</div>';
+							html += '<div class="col-sm-1 rdio rdio-theme circle">';
+							html += '<input id="radio-type-circle-' + row.id + '-4" type="radio" name="pregunta-' + row.id + '" value="4"/>';
+							html += '<label for="radio-type-circle-' + row.id + '-4" class="col-md-1" style="padding-left: 26px">4</label>';
+							html += '</div>';
+							html += '<div class="col-sm-1 rdio rdio-theme circle">';
+							html += '<input id="radio-type-circle-' + row.id + '-5" type="radio" name="pregunta-' + row.id + '" value="5"/>';
+							html += '<label for="radio-type-circle-' + row.id + '-5" class="col-md-1" style="padding-left: 26px">5</label>';
+							html += '</div>';
+							html += '</div>';
+						}
+						if(row.tipo == 'ABIERTA'){
+							html += '<div class="col-sm-8">';
+							html += '<textarea rows="3" cols="30" name="pregunta-' + row.id + '" class="form-control" placeholder="Respuesta"></textarea>';
+							html += '</div>';
+						}
+
+						if(row.tipo == 'CERRADA'){
+							var opciones = row.respuestas.split("#");
+							$.each(opciones, function(j, opt) {
+
+
+								
+								html += '<div class="col-sm-12 rdio rdio-theme" style="margin-left: 12px;">';
+								html += '<input id="radio-type-circle-' + row.id + '-' + opt + '" type="radio" name="pregunta-' + row.id + '" value="' +opt + '"/>';
+								html += '<label for="radio-type-circle-' + row.id + '-' + opt + '" class="col-md-1" style="padding-left: 26px">' + opt + '</label>';
+								html += '</div>';
+							});
+						}
+
+			        });
+					html += '</div>';
+					html +=  '<div class="panel-footer">'
+					html +=  '<div style="text-align:right;">'
+					html += '<button style="width:85px; text-align:right" class="btn btn-success shadow rounded mr-5" id="finalizar">Guardar</button></div></div>';		
+					$('#form').append(html);
+
+		        },
+		        error: function (request,error) {
+		            alert('Ha ocurrido un error de red, intente nuevamente por favor!');
+		        }
+		    });
+
+		});
+		
+		$(document).ready(function(){
+				$("#cerrarSesion").on("click",function(event) {
+					localStorage.removeItem("usuario"); // Para cerrar sesion
+					window.location.replace('login.html');
+				});
+		});
+		</script>
+		<script>
+			$(document).ready(function(){
+				$("#cerrarSesion").on("click",function(event) {
+					localStorage.removeItem("usuario"); // Para cerrar sesion
+					window.location.replace('index.html');
+				});
+				$('body').on('click', '#finalizar',function(event) { 
+					$.ajax({
+							url: 'http://mba.coreback.net/CE/encuesta/finalizar',
+							data: $("#form").serialize(),
+							type: "POST",
+							dataType: "json",
+							success: function (result) {
+								if(result.error != null){
+									alert("Error al guardar las respuestas, intentelo nuevamente.");
+									window.location.replace('encuestas.html?subscripcion=MBA');
+								}else{
+									alert("La encuesta se guardo correctamente.");
+									window.location.replace("encuestas.html?subscripcion=MBA");
+								}
+							},
+						});
+
+			});	
+		});
+		</script>
+	</body>
+</html>

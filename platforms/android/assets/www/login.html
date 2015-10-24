@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.css" />
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css"/>
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+
+	<link rel="stylesheet" href="css/blue-gray.theme.css">
+	<link href="css/reset.css" rel="stylesheet"/>
+	<link href="css/layout.css" rel="stylesheet"/>
+	<link href="css/components.css" rel="stylesheet"/>
+	<link href="css/plugins.css" rel="stylesheet"/>
+	<link href="css/themes/bud-green.theme.css" rel="stylesheet" id="theme"/>
+	<link href="css/custom.css" rel="stylesheet"/>
+	<link href="css/animate.min.css" rel="stylesheet"/>
+
+
+
+	<script src="cordova.js"></script>
+
+	
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+	<div data-role="page" id="login" class="page-content animated fadeInLeft">			
+		<div class="header-content" style="background:white;height:60px;">
+			<img src="universidad.jpg" width="100px"/>
+		</div>
+
+		
+			<div class="panel panel-theme rounded shadow">
+				<div class="panel-heading" style="background: white; border-color:white">
+					<img src="img/logo.jpg" width="100%;"/>
+				</div>
+				<div class="panel-body">
+					<div id="blog-grid" class="row">
+						
+						<form id="formulario">
+							<div style='margin-left:10px'>
+								
+								<input name="mail" id="mail" placeholder=" Ingrese Email..." type="text" style='width:99%; height:50px' />
+								
+								<div style="margin-top:10px;">
+								<input type="password" name="password" id="password" placeholder=" Ingrese Contrase&ntilde;a..." style='width:99%; height:50px'/>
+								</div>
+								<div style="margin-top:10px;">
+								<input type="button" value="Ingresar" class="btn btn-info shadow rounded" id="botonLogin" style='width:99%; height:50px; background-color:#AC2D26'>
+								</div>
+							</div>		
+							
+								
+							</h2>
+
+						</form>
+						
+					</div>
+				</div>
+			</div>
+		
+		
+	</div>
+	<script src="js/index.js"></script>
+	<script type="text/javascript">
+	$(document).on('pageinit', '#login', function(){
+
+   		$('#botonLogin').on("click",function(event) {
+   			var cadena = $('#formulario').serialize();
+			PushbotsPlugin.getToken(function(token){ 
+					while(token == null){
+
+					}
+	 				cadena = cadena + "&token=" + token;
+	 				$.ajax({
+						url: 'http://mba.coreback.net/CE/login/mobile',
+						data: cadena,
+						type: "POST",
+						dataType: "json",
+						success: function (result) {
+							if(result.error != null){
+								alert("Usuario y/o contrasenia incorrecta.");
+								window.location.replace('login.html');
+							}else{
+								localStorage.setItem("usuario", result.mail);
+								window.location.replace("encuestas.html?subscripcion=MBA");
+							}
+						},
+						error: function (request, error) {
+							alert("Ocurrio un error inesperado, intente nuevamente.");
+							window.location.replace('login.html');
+						}
+					});
+
+	 		});
+		});
+	});
+	</script>
+
+	
+
+</body>
+</html>
