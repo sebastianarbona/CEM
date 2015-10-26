@@ -72,11 +72,9 @@
 
    		$('#botonLogin').on("click",function(event) {
    			var cadena = $('#formulario').serialize();
-			PushbotsPlugin.getToken(function(token){ 
-					while(token == null){
-
-					}
-	 				cadena = cadena + "&token=" + token;
+			
+			cadena = cadena + "&token=" + 'token';
+			alert(cadena);
 	 				$.ajax({
 						url: 'http://mba.coreback.net/CE/login/mobile',
 						data: cadena,
@@ -96,8 +94,8 @@
 							window.location.replace('login.html');
 						}
 					});
-
-	 		});
+					
+			
 		});
 	});
 	</script>
