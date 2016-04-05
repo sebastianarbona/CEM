@@ -1,4 +1,4 @@
-var server = 'http://192.168.37.12:8080/CE/';
+var server = 'http://mba.coreback.net/CE/';
 
 $(document).ready(function(){
     
