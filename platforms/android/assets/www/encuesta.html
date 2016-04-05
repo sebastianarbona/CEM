@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MBA - Encuestas</title>
+
+	<script src="cordova.js"></script>
+
+	<script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/jquery.event.move.js"></script>
+    <script src="js/jquery.twentytwenty.js"></script>
+    <script src="js/scripts.js"></script>
+	<script src="js/cem.js"></script>
+	<script src="js/jquery.msgbox.min.js"><!-- --></script>
+
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.css" />
+    <link href="css/twentytwenty.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/fonts.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+	<link rel="stylesheet" href="css/blue-gray.theme.css">
+	<link href="css/components.css" rel="stylesheet"/>
+	
+</head>
+<body>
+</head>
+	<body>
+		<div data-role="page" id="encuestas">
+
+	        <div class="appBar background-color-lightGray color-midGray" data-role="header">
+	            <div class="appBarLeft">MBA - UNCUYO</div>
+	            <div class="appBarRight">
+	                <a href="#popupBasic" data-rel="popup" data-transition="pop"><i class="material-icons md-20">more_vert</i></a>
+	            </div>
+	        </div>
+
+	         <div class="mainContent color-text" data-role="main" style="padding:12px;">
+	        	<h1 id="titulo" style="font-size: 15px; text-transform: uppercase; font-weight: 600;"></h1>
+				<div class="loginBtns">
+					<form id="form" class="form-horizontal">
+							
+					</form>
+				</div>
+	        </div>
+		</div>
+	 <div class="tabBar background-color-lightGray color-midGray" data-role="footer">
+            <ul>
+                <li class="active">
+                    <a href="#" id="encuestas_pendientes" data-ajax="false"><i class="material-icons md-20">assignment</i></a>
+                </li>
+                <li>
+                    <a href="#" id="encuestas_finalizadas" data-ajax="false"><i class="material-icons md-20">assignment_turned_in</i></a>
+                </li>
+                <li>
+                    <a href="#"  id="cuenta" data-ajax="false"><i class="material-icons md-20">account_box</i></a>
+                </li>
+                <li>
+                    <a href="#" id="notificaciones" data-ajax="false">
+                        <i class="material-icons md-20">announcement</i><span class="notificationAlert"></span></a>
+                </li>
+            </ul>
+        </div>
+
+        <div data-role="popup" id="popupBasic" class="popupYecas">
+            <ul>
+                <li><a href="#" data-ajax="false" id="cerrarSesion">Logout</a></li>
+                <li><a href="#" data-ajax="false" id="salir">Salir</a></li>
+            </ul>
+        </div>
+
+        
+
+		</div>
+<script>
+
+$(document).on('pageinit', '#encuestas', function(){
+			
+	var datos = location.search;
+
+	datos = datos.substr(1,datos.length);
+	var arrVariables = datos.split ("&"); 
+	var arrVar0 = arrVariables[0].split ("="); 
+	var arrVar1 = arrVariables[1].split ("=");
+	var arrVar2 = arrVariables[2].split ("="); 
+	var buscar="%20"
+	var segmento = arrVar0[1];
+	var idEncuesta = arrVar1[1];
+	
+	segmento = segmento.toUpperCase();
+	
+	var encuestaNombre = arrVar2[1];
+	encuestaNombre = encuestaNombre.toUpperCase();
+	encuestaNombre = encuestaNombre.replace(new RegExp(buscar,"g") ," ");
+
+	var url =  server + 'encuesta/encuesta/mobile?id=' + idEncuesta;	
+	
+
+	$.ajax({
+        url: url,
+        dataType: "json",
+        async: true,
+        success: function (result) {
+			var html = '<div class="form-group">';
+			html += '<input type="hidden" name="id" value="' + result.id + '"/>';
+			$('#titulo').append('<h1>' + result.encuesta + '</h1>');			
+			
+			html += '<span>' + result.modelo + '<br/><br/><i>A- Las respuestas de tipo valoración del 1 al 4, se debe considerar 1 como la opción de menor valor y 4 la de mayor valor.<br/>B- La encuesta es de caracter anónimo.</i><span>';
+
+			$.each(result.preguntas, function(i, row) {
+				html += '<p style="font-size: 15px; margin-top: 12px; margin-bottom: 20px;">' + row.pregunta;
+				if(row.obligatoria == 'true'){
+				html += '<b> (Obligatoria)</b>'
+				}
+				html += '</p>';
+				if(row.tipo == 'VALORACION5'){
+					html += '<div class="col-sm-8">';
+					html += '<div class="col-sm-1 rdio rdio-theme circle">';
+					html += '<input id="mail" type="hidden" name="email" value="' + localStorage.getItem("usuario") + '"/>';
+					html += '<input id="radio-type-circle-' + row.id + '-2" type="radio" name="pregunta-' + row.id + '" value="2"/>';
+					html += '<label for="radio-type-circle-' + row.id + '-2"class="col-md-1" style="display:unset;">1</label>';
+					html += '</div>';
+					html += '<div class="col-sm-1 rdio rdio-theme circle">';
+					html += '<input id="radio-type-circle-' + row.id + '-3" type="radio" name="pregunta-' + row.id + '" value="3"/>';
+					html += '<label for="radio-type-circle-' + row.id + '-3"class="col-md-1" style="display:unset;">2</label>';
+					html += '</div>';
+					html += '<div class="col-sm-1 rdio rdio-theme circle">';
+					html += '<input id="radio-type-circle-' + row.id + '-4" type="radio" name="pregunta-' + row.id + '" value="4"/>';
+					html += '<label for="radio-type-circle-' + row.id + '-4" class="col-md-1" style="display:unset;">3</label>';
+					html += '</div>';
+					html += '<div class="col-sm-1 rdio rdio-theme circle">';
+					html += '<input id="radio-type-circle-' + row.id + '-5" type="radio" name="pregunta-' + row.id + '" value="5"/>';
+					html += '<label for="radio-type-circle-' + row.id + '-5" class="col-md-1" style="display:unset;">4</label>';
+					html += '</div>';
+					html += '</div>';
+				}
+				if(row.tipo == 'ABIERTA'){
+					html += '<div class="col-sm-8">';
+					html += '<textarea style="width: 100%;" rows="3" cols="30" name="pregunta-' + row.id + '"  placeholder="Respuesta"></textarea>';
+					html += '</div>';
+				}
+
+				if(row.tipo == 'CERRADA'){
+					var opciones = row.respuestas.split("#");
+					$.each(opciones, function(j, opt) {
+
+
+						
+						html += '<div class="col-sm-12 rdio rdio-theme" style="margin-left: 12px;">';
+						html += '<input id="radio-type-circle-' + row.id + '-' + opt + '" type="radio" name="pregunta-' + row.id + '" value="' +opt + '"/>';
+						html += '<label for="radio-type-circle-' + row.id + '-' + opt + '" class="col-md-1" style="display:unset;">' + opt + '</label>';
+						html += '</div>';
+					});
+				}
+
+	        });
+			html += '</div>';
+			html +=  '<div class="panel-footer">'
+			html +=  '<div style="text-align:right;">'
+			html += '<a id="finalizar" href="#" class="btnRounded twitter" style="margin-top: 50px; margin-bottom: 50px; border-radius: 0% ! important; background: darkgreen none repeat scroll 0% 0%; color: white; font-weight: 500;"><i class="material-icons md-20" style="float:left;">save</i>Guardar</a></div></div>';		
+			
+			$('#form').append(html);
+
+        },
+        error: function (request,error) {
+            $.alert('Ha ocurrido un error de red, intente nuevamente por favor!');
+        }
+    });
+
+		});
+		
+		
+		</script>
+		<script>
+			$(document).ready(function(){
+				
+				$('body').on('click', '#finalizar',function(event) { 
+					$.ajax({
+						//	url: 'http://mba.coreback.net/CE/encuesta/finalizar',
+							url: server + 'encuesta/finalizar',
+							data: $("#form").serialize(),
+							type: "POST",
+							dataType: "json",
+							success: function (result) {
+								if(result.error != null){
+									$.alert(result.error, function(){
+									window.location.replace('encuestas.html?subscripcion=Encuestas');
+								});
+								}else{
+									$.alert("La encuesta se guardo correctamente.", function(){
+									window.location.replace("encuestas.html?subscripcion=Encuestas");
+									});
+								}
+							},
+						});
+
+			});	
+		});
+		</script>
+	</body>
+</html>

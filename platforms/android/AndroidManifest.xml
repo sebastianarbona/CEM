@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<manifest android:hardwareAccelerated="true" android:versionCode="1" android:versionName="0.0.1" package="org.mendoza.agr" xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest android:hardwareAccelerated="true" android:versionCode="2" android:versionName="0.0.2" package="edu.uncuyo.mba" xmlns:android="http://schemas.android.com/apk/res/android">
     <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,7 +11,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.mendoza.agr.MESSAGE" />
+                <action android:name="edu.uncuyo.mba.MESSAGE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -19,17 +19,17 @@
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="org.mendoza.agr" />
+                <category android:name="edu.uncuyo.mba" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.pushbots.plugin.Receiver" />
+        <receiver android:name="com.pushbots.plugin.PushHandler" />
         <receiver android:name="com.pushbots.push.DefaultPushHandler" />
         <service android:name="com.pushbots.push.GCMIntentService" />
     </application>
-    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="22" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="22" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <permission android:name="org.mendoza.agr.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-    <uses-permission android:name="org.mendoza.agr.permission.C2D_MESSAGE" />
+    <permission android:name="edu.uncuyo.mba.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="edu.uncuyo.mba.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 </manifest>

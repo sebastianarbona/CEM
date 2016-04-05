@@ -4402,12 +4402,12 @@ form .help-inline {
 .rdio input[type=radio]:checked + label::after {
   content: "";
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: 2px;
+  left: 2px;
   display: inline-block;
   font-size: 11px;
-  width: 10px;
-  height: 10px;
+  width: 15px;
+  height: 15px;
 }
 .rdio.rounded input[type=radio]:checked + label::after,
 .rdio.rounded input[type=radio]:checked + label::before {
@@ -4457,16 +4457,16 @@ form .help-inline {
   width: 20px;
   height: 20px;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: -1px;
+  left: -1px;
   content: '';
   display: inline-block;
   border: 1px solid #BBB;
   background: #FFF;
 }
 .ckbox-teal input[type=checkbox]:checked + label::after {
-  border-color: #37bc9b;
-  background-color: #37bc9b;
+  border-color: darkred;
+  background-color: darkred;
 }
 /* ========================================================================
  * CONTEXTUAL CLASSES CHECKBOX

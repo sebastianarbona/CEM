@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MBA - Encuestas</title>
+
+	<script src="cordova.js"></script>
+
+	<script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/jquery.event.move.js"></script>
+    <script src="js/jquery.twentytwenty.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/cem.js"></script>
+    <script src="js/jquery.msgbox.min.js"><!-- --></script>
+
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.css" />
+    <link href="css/twentytwenty.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/fonts.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+
+
+</head>
+<body>
+</head>
+	<body>
+		<div data-role="page" id="encuestas">
+
+	        <div class="appBar background-color-lightGray color-midGray" data-role="header">
+	            <div class="appBarLeft">MBA - UNCUYO</div>
+	            <div class="appBarRight">
+	                <a href="#popupBasic" data-rel="popup" data-transition="pop"><i class="material-icons md-20">more_vert</i></a>
+	            </div>
+	        </div>
+
+	         <div class="mainContent color-text" data-role="main" style="padding:12px;">
+	        	<h1 style="font-size: 15px; text-transform: uppercase; font-weight: 600;">Editar Cuenta</h1>
+	        	<p>Utiliza el siguiente formulario para cambiar la información de tu cuenta.</p>
+                <div class="loginBtns">
+                    <div style='margin-left:10px'>
+                        <form id="formulario">        
+                            <input name="mail" id="mail" placeholder="E-Mail" type="text" style='width:99%; height:50px; color:black' disabled="disabled" />
+                            <div style="margin-top:10px;">
+                                <input type="password" name="password1" id="password" placeholder="Nueva Clave" style='width:99%; height:50px; color:black'/>
+                                <input type="password" name="password2" id="password2" placeholder="Repita Clave" style='width:99%; height:50px; color:black'/>                            </div>
+                        </form>
+                        <div style="margin-top:10px;">
+                          <a id="botonLogin" href="#" class="btnRounded twitter" style="border-radius: 0% ! important; background: darkgreen none repeat scroll 0% 0%; color: white; font-weight: 500;"><i class="material-icons md-20" style="float:left;">save</i>Guardar</a>
+                        </div>
+                    </div>
+                </div>
+	        </div>
+
+
+	        <div class="tabBar background-color-lightGray color-midGray" data-role="footer">
+            <ul>
+                <li>
+                    <a href="#" id="encuestas_pendientes" data-ajax="false"><i class="material-icons md-20">assignment</i></a>
+                </li>
+                <li>
+                    <a href="#" id="encuestas_finalizadas" data-ajax="false"><i class="material-icons md-20">assignment_turned_in</i></a>
+                </li>
+                <li class="active">
+                    <a href="#"  id="cuenta" data-ajax="false"><i class="material-icons md-20">account_box</i></a>
+                </li>
+                <li>
+                    <a href="#" id="notificaciones" data-ajax="false">
+                        <i class="material-icons md-20">announcement</i><span class="notificationAlert"></span></a>
+                </li>
+            </ul>
+        </div>
+        <div data-role="popup" id="popupBasic" class="popupYecas">
+            <ul>
+                <li><a href="#" data-ajax="false" id="cerrarSesion">Logout</a></li>
+                <li><a href="#" data-ajax="false" id="salir">Salir</a></li>
+            </ul>
+        </div>
+
+		</div>
+
+		<script>
+		
+		$(document).on('pageinit', '#encuestas', function(){
+
+            var usuario = localStorage.getItem("usuario");
+			$("#mail").val(usuario);
+			
+			var url = server + 'encuesta/editar/cuenta?mail=' + usuario;
+			
+		    $('#botonLogin').on("click",function(event) {
+            	var cadena = $('#formulario').serialize();
+            
+            	$.ajax({
+                    url: url,
+                    data: cadena,
+                    type: "GET",
+                    dataType: 'json',
+                    success: function (result) {
+                        if(result.error != null){
+                            $.alert("Las claves ingresadas no son iguales.",function (){
+                                $("#password").val("");
+                                $("#password2").val("");
+                        });
+                        }else{
+                        	$.alert("La clave se cambio corrrectamente.",function(){
+                            window.location.replace("encuestas.html?subscripcion=Encuestas");
+                        });
+                        }
+                    },
+                    error: function (request, error) {
+                        $.alert("Ocurrio un error inesperado, intente nuevamente.", function(){
+                            localStorage.mail = document.getElementById("mail").value;
+                            window.location.replace('login.html');
+                        });    
+                    }
+                });
+
+       		 });
+			
+		});
+		</script>
+	</body>
+</html>

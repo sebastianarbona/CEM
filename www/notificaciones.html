@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MBA - Encuestas</title>
+
+	<script src="cordova.js"></script>
+
+	<script src="js/jquery-1.9.1.min.js"><!-- --></script>
+	<script src="js/jquery.mobile-1.4.5.min.js"><!-- --></script>
+	<script src="js/bootstrap.min.js"><!-- --></script>
+
+    <script src="js/jquery.event.move.js"></script>
+    <script src="js/jquery.twentytwenty.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/cem.js"></script>
+    <script src="js/jquery.msgbox.min.js"><!-- --></script>
+
+
+    <link href="css/twentytwenty.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/fonts.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+
+
+</head>
+<body>
+</head>
+	<body>
+		<div data-role="page" id="encuestas">
+
+	        <div class="appBar background-color-lightGray color-midGray" data-role="header">
+	            <div class="appBarLeft">MBA - UNCUYO</div>
+	            <div class="appBarRight">
+	                <a href="#popupBasic" data-rel="popup" data-transition="pop"><i class="material-icons md-20">more_vert</i></a>
+	            </div>
+	        </div>
+
+	         <div class="mainContent color-text" data-role="main" style="padding:12px;">
+	        	<h1 style="font-size: 15px; text-transform: uppercase; font-weight: 600;">Notificaciones</h1>
+	        	<div id="blog-grid" class="row">
+					<!-- -->
+				</div>
+	        </div>
+
+
+	        <div class="tabBar background-color-lightGray color-midGray" data-role="footer">
+            <ul>
+                <li class="active">
+                    <a href="#" id="encuestas_pendientes" data-ajax="false"><i class="material-icons md-20">assignment</i></a>
+                </li>
+                <li>
+                    <a href="#" id="encuestas_finalizadas" data-ajax="false"><i class="material-icons md-20">assignment_turned_in</i></a>
+                </li>
+                <li>
+                    <a href="#"  id="cuenta" data-ajax="false"><i class="material-icons md-20">account_box</i></a>
+                </li>
+                <li>
+                    <a href="#" id="notificaciones" data-ajax="false">
+                        <i class="material-icons md-20">announcement</i><span class="notificationAlert"></span></a>
+                </li>
+            </ul>
+        </div>
+
+
+		</div>
+
+		<script>
+	
+		$(document).on('pageinit', '#encuestas', function(){
+			
+			
+			var usuario = localStorage.getItem("usuario");
+		//	var url = 'http://mba.coreback.net/CE/encuesta/ver/mobile?mail=' + usuario;
+			var url = server + '/encuesta/ver/notificaciones?mail=' + usuario;
+			
+		
+			
+			$.ajax({
+				url: url,
+		        dataType: "json",
+		        async: true,
+		        success: function (result) {
+		        	if(result.notificaciones != ""){
+			        	$.each(result.notificaciones, function(i, row) {
+			        		var blog = '<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12"><div class="blog-item rounded shadow">'
+
+	                        blog = blog + '<div style="text-align: left; width: 100%; margin-top: 10px; margin-bottom: 10px;"><h4 style="font-size:12px; text-transform: uppercase;"><a id="cultivo' + row.id +'" href="#"><i class="material-icons md-20" style="color:lime">chat</i></a>' + row.fecha + ' - ' + row.titulo + '</h4></div></div></div>';
+
+				            $('#blog-grid').append(blog);
+				        
+				        });
+		       		}else{
+		       			var blog = '<h2 style="padding-left:15px;"> &#161;Felicitaciones! Has respondido todas tus encuestas.</h2>';
+		       			$('#blog-grid').append(blog);
+
+		       		}
+		        },
+		        error: function (request,error) {
+		        	$.alert('Ha ocurrido un error de red, intente nuevamente por favor!');
+		        }
+		    });
+		});
+		</script>
+	</body>
+</html>

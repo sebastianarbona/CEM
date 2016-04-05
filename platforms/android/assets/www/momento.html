@@ -22,6 +22,7 @@
 	<script src="js/jquery-1.9.1.min.js"></script>
 	<script src="js/jquery.mobile-1.4.5.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.msgbox.min.js"><!-- --></script>
 
 </head>
 	<body>
@@ -139,7 +140,7 @@
 					$('#consejo').append('<br/><p style="margin-left: 5px; font-size: 12px;">'+ consejo +'</p>'); 
 		        },
 		        error: function (request,error) {
-		            alert('Ha ocurrido un error de red, intente nuevamente por favor!');
+		            $.alert('Ha ocurrido un error de red, intente nuevamente por favor!');
 		        }
 		    });
 		    $("#botonVolver").click(function(){

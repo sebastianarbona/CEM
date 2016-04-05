@@ -26,18 +26,46 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
+        
         document.addEventListener('deviceready', this.onDeviceReady, false);
+
+
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
+
+
+
+
+
     onDeviceReady: function() {
-        if(PushbotsPlugin.isAndroid()){
-            PushbotsPlugin.initializeAndroid("56141fc4177959494f8b4567", "372804674135");
-        } else {
-            PushbotsPlugin.initialize("56141fc4177959494f8b4567");
+       document.addEventListener('deviceready', function () {
+        var Pushbots = PushbotsPlugin.initialize("56141fc4177959494f8b4567", {"android":{"sender_id":"372804674135"}});
+        var tokenCel = localStorage.getItem("tokenCel");
+        if(tokenCel == null){
+            Pushbots.on("registered", function(token){
+                if(token != null){
+                        localStorage.setItem("tokenCel", token);      
+                        var usuario = localStorage.getItem("usuario");
+                        if(usuario != null){
+                            window.location.replace("encuestas.html?subscripcion=MBA");
+                        } else {
+                            window.location.replace("login.html");
+                        }
+                 }
+                    
+            });
+        }else{
+            var usuario = localStorage.getItem("usuario");
+                        if(usuario != null){
+                            window.location.replace("encuestas.html?subscripcion=MBA");
+                        } else {
+                            window.location.replace("login.html");
+                        }
         }
+        }, false);
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {

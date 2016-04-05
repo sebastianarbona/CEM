@@ -41,11 +41,11 @@
                             "count": 1
                         },
                         {
-                            "xml": "<permission android:name=\"org.mendoza.agr.permission.C2D_MESSAGE\" android:protectionLevel=\"signature\" />",
+                            "xml": "<permission android:name=\"edu.uncuyo.mba.permission.C2D_MESSAGE\" android:protectionLevel=\"signature\" />",
                             "count": 1
                         },
                         {
-                            "xml": "<uses-permission android:name=\"org.mendoza.agr.permission.C2D_MESSAGE\" />",
+                            "xml": "<uses-permission android:name=\"edu.uncuyo.mba.permission.C2D_MESSAGE\" />",
                             "count": 1
                         },
                         {
@@ -55,11 +55,11 @@
                     ],
                     "/manifest/application": [
                         {
-                            "xml": "<receiver android:name=\"com.pushbots.google.gcm.GCMBroadcastReceiver\" android:permission=\"com.google.android.c2dm.permission.SEND\"><intent-filter><action android:name=\"com.google.android.c2dm.intent.RECEIVE\" /><action android:name=\"com.google.android.c2dm.intent.REGISTRATION\" /><category android:name=\"org.mendoza.agr\" /></intent-filter></receiver>",
+                            "xml": "<receiver android:name=\"com.pushbots.google.gcm.GCMBroadcastReceiver\" android:permission=\"com.google.android.c2dm.permission.SEND\"><intent-filter><action android:name=\"com.google.android.c2dm.intent.RECEIVE\" /><action android:name=\"com.google.android.c2dm.intent.REGISTRATION\" /><category android:name=\"edu.uncuyo.mba\" /></intent-filter></receiver>",
                             "count": 1
                         },
                         {
-                            "xml": "<receiver android:name=\"com.pushbots.plugin.Receiver\" />",
+                            "xml": "<receiver android:name=\"com.pushbots.plugin.PushHandler\" />",
                             "count": 1
                         },
                         {
@@ -73,7 +73,7 @@
                     ],
                     "/*/application/activity": [
                         {
-                            "xml": "<intent-filter><action android:name=\"org.mendoza.agr.MESSAGE\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter>",
+                            "xml": "<intent-filter><action android:name=\"edu.uncuyo.mba.MESSAGE\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter>",
                             "count": 1
                         }
                     ]
@@ -82,16 +82,15 @@
         }
     },
     "installed_plugins": {
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "org.mendoza.agr"
+        "android.support.v4": {
+            "PACKAGE_NAME": "edu.uncuyo.mba"
         },
-        "com.pushbots.push": {
-            "PACKAGE_NAME": "org.mendoza.agr"
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "edu.uncuyo.mba"
+        },
+        "pushbots-cordova-plugin": {
+            "PACKAGE_NAME": "edu.uncuyo.mba"
         }
     },
-    "dependent_plugins": {
-        "android.support.v4": {
-            "PACKAGE_NAME": "org.mendoza.agr"
-        }
-    }
+    "dependent_plugins": {}
 }
